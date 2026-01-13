@@ -1,0 +1,71 @@
+.casedetailcontainer {
+    height: calc(100dvh - 56px - 3rem);
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+}
+
+.casedetailrow {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.casedetailrowblock {
+    height: 33%;
+    display: flex;
+    flex-direction: column;
+}
+
+.tablecontainer {
+    flex: 1;
+    overflow-block: auto;
+    font-size: 18px;
+    margin: 0 10px;
+    scrollbar-gutter: stable;
+    scrollbar-color: #999 transparent; /* 滑塊 軌道 */
+}
+
+
+.tablehead {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background-color: #f9f5bb;
+    box-shadow: none !important;
+}
+
+.newlink {
+    position: absolute;
+    right: 10px;
+    font-size: 20px;
+    bottom: 6px;
+}
+
+.showgap {
+    display: none;
+}
+
+/* 當螢幕寬度小於 768px 時觸發 */
+@media (max-width: 767px) {
+    .casedetailcontainer {
+        height: auto;
+    }
+
+    .casedetailrow {
+        height: auto;
+    }
+
+    .casedetailrowblock {
+        height: auto;
+    }
+
+    .invisible {
+        height: 10px;
+    }
+
+    .showgap {
+        display: flex;
+        height: 0.25%;
+    }
+}

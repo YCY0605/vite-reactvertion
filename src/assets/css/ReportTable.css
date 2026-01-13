@@ -1,0 +1,72 @@
+.tablecontainer {
+    max-height: 500px;
+    overflow: auto;
+    scrollbar-gutter: stable;
+}
+
+.reporttable {
+    width: 100%;
+    background-color: #ccc;
+}
+
+.tablehead {
+    background-color: #f9f5bb;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    box-shadow: inset 0 1px 0 #ccc, inset 0 -1px 0 #ccc;
+}
+
+.headorder {
+    cursor: pointer;
+}
+
+.tableheadtext {
+    padding: 12px 15px;
+    text-align: center;
+    font-weight: bold;
+    color: #555;
+    white-space: nowrap;
+}
+
+    .tableheadtext div {
+        display: inline-block;
+    }
+
+.tablerow {
+    background-color: #fff;
+}
+
+.tableblock {
+    border-Bottom: 1px solid #ddd;
+    padding: 12px 15px;
+    text-align: center;
+}
+
+.tablerow:hover {
+    background-color: #e9ecef !important;
+    transition: background-color 0.2s;
+}
+
+.detailbtn, .reportbtn {
+    background-color: #f3f3f3;
+    border: 1px solid #aaa;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    color: #333;
+    width: 100px;
+}
+
+.dialogwindow {
+    border: none;
+    border-radius: 8px; padding: 30px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2); width: 300px;
+}
+
+.dialogbtn {
+    padding: 8px 20px;
+    border: 1px solid #aaa;
+    border-radius: 4px;
+    cursor: pointer;
+}

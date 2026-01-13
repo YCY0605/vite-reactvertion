@@ -1,0 +1,24 @@
+{
+    "compilerOptions": {
+        "target": "ES2020",
+        "module": "ESNext",
+        "lib": [ "ES2020", "DOM", "DOM.Iterable" ],
+        "jsx": "react-jsx",
+
+        /* 模組解析選項 */
+        // 啟用 CommonJS/ES Module 互通性
+        "esModuleInterop": true,
+        // 使用現代打包工具的解析策略
+        "moduleResolution": "Bundler",
+
+        /* 嚴格度和便利性旗標 */
+        "strict": true,
+        "skipLibCheck": true, // 略過 node_modules 中的型別檢查
+
+        /* 其他選項 */
+        "forceConsistentCasingInFileNames": true,
+        "resolveJsonModule": true,
+        "allowJs": true // 允許在 TS 專案中包含 JS 檔案
+    },
+    "include": [ "src" ] // 告訴 TypeScript 在哪裡尋找原始碼檔案
+}

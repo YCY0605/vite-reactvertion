@@ -1,0 +1,81 @@
+.mainvwrow {
+    flex: 1;
+    display: flex;
+}
+
+.indexdiv {
+    padding: 2% !important;
+    container-type: inline-size;
+    min-height: 600px;
+}
+
+.leftbuttoncontainer {
+    height: 20%;
+    width: 100%;
+    border: 1px solid #aaa;
+    border-radius: 4px;
+    padding: 1%;
+    background-color: #dddddd;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    place-items: center;
+    container-type: size;
+}
+
+.leftbutton {
+    height: min(30cqw,80cqh);
+    aspect-ratio: 1;
+    border-radius: 6px;
+    border: 1px solid #777;
+    font-size: 6cqw;
+}
+
+.rightbuttoncontainer {
+    height: 52%;
+    width: 100%;
+    border: 1px solid #aaa;
+    border-radius: 4px;
+    background-color: #dddddd;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    padding: 1.5%;
+}
+
+.rightbutton {
+    border-radius: 6px;
+    margin: 10px;
+    font-size: 6cqw;
+    background-color: #ffee90;
+    border: 1px solid #777;
+}
+
+.calendar {
+    font-size: 5cqw;
+    display: grid;
+    place-items: center;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(auto-fill, 30px);
+    overflow-y: auto;
+    gap: 1px;
+    background-color: #aaa;
+    border: 1px solid #aaa;
+}
+
+.calendarfield {
+    width: 100%;
+    height: 100%;
+    background-color: #eee;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.calendaritem {
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

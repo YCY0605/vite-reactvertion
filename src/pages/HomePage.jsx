@@ -1,4 +1,5 @@
 ﻿import React, { useState, useEffect } from 'react';
+import '../assets/css/HomePage.css';
 
 const HomePage = () => {
     const [currentTime, setCurrentTime] = useState(new Date());
@@ -24,13 +25,10 @@ const HomePage = () => {
             {/* 手機只顯示這個div */}
             <div className="col indexdiv">
                 {/* 打卡按鈕 */}
-                <div style={{
-                    height: '20%', width: '100%', borderRadius: '10px', backgroundColor: '#dddddd',
-                    display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', placeItems: 'center', containerType: 'size'
-                }}>
-                    <button className="indexleftbutton" style={{ backgroundColor: '#77ff77' }}>簽到</button>
-                    <button className="indexleftbutton" style={{ backgroundColor: '#f5a199' }}>簽退</button>
-                    <button className="indexleftbutton" style={{ backgroundColor: '#ff9966' }}>外出</button>
+                <div className={'leftbuttoncontainer'}>
+                    <button className="leftbutton" style={{ backgroundColor: '#77ff77' }}>簽到</button>
+                    <button className="leftbutton" style={{ backgroundColor: '#f5a199' }}>簽退</button>
+                    <button className="leftbutton" style={{ backgroundColor: '#ff9966' }}>外出</button>
                 </div>
 
                 {/* 時間 */}
@@ -88,14 +86,11 @@ const HomePage = () => {
                 <div style={{ height: '5%', width: '100%' }}></div>
 
                 {/* 快速按鈕 */}
-                <div style={{
-                    height: '52%', width: '100%', borderRadius: '10px', backgroundColor: '#dddddd', display: 'grid',
-                    gridTemplateColumns: '1fr 1fr', gridTemplateRows: '1fr 1fr', padding: '10px'
-                }}>
-                    <button className="indexrightbutton">個人任務</button>
-                    <button className="indexrightbutton">案件管理</button>
-                    <button className="indexrightbutton">請假事宜</button>
-                    <button className="indexrightbutton">出勤管理</button>
+                <div className={'rightbuttoncontainer'}>
+                    <button className="rightbutton">個人任務</button>
+                    <button className="rightbutton">案件管理</button>
+                    <button className="rightbutton">請假事宜</button>
+                    <button className="rightbutton">出勤管理</button>
                 </div>
             </div>
         </div>
