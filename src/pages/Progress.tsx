@@ -1,4 +1,4 @@
-﻿import React, { useState, useMemo, useRef } from 'react';
+﻿import React, { useState, useMemo, useRef, useEffect } from 'react';
 import {
     createColumnHelper,
     flexRender,
@@ -58,7 +58,7 @@ const initialData: OrderData[] = [
 const columnHelper = createColumnHelper<OrderData>();
 
 // 將 Columns 定義移到外部，接受回調函式處理點擊
-const getColumns = (onReportClick: (orderNumber: string) => void) => [
+const getColumns = ({ onReportClick }: { onReportClick: (order: string) => void }) => [
     columnHelper.accessor('startTime', {
         header: () => <div className={'headorder'}>開始時間</div>,
         filterFn: dateRangeFilterFn,
@@ -85,25 +85,60 @@ const getColumns = (onReportClick: (orderNumber: string) => void) => [
     }),
 ];
 
+// dialog
+function DoubleCheckDialog({ order, isOpen, onClose }: { order: string | null, isOpen: boolean, onClose: () => void }) {
+    const dialogRef = useRef<HTMLDialogElement>(null);
+    useEffect(() => {
+        if (isOpen) {
+            dialogRef.current?.showModal();
+        } else {
+            dialogRef.current?.close();
+        }
+    }, [isOpen]);
+    return (
+        <dialog
+            ref={dialogRef}
+            className={'dialogwindow'}
+            onClose={onClose}
+        >
+            <div style={{ textAlign: 'center' }}>
+                <h3 style={{ marginTop: 0 }}>進度回報</h3>
+                <p>您正在回報單號：<br /><strong>{order}</strong></p>
+                <div style={{ marginTop: '20px', display: 'flex', justifyContent: 'center', gap: '10px' }}>
+                    <button
+                        onClick={() => {
+                            alert(`已提交回報：${order}`);
+                            onClose();
+                        }}
+                        className={'dialogbtn'}
+                        style={{ color: '#fff', backgroundColor: '#00ba00' }}
+                    >
+                        提交
+                    </button>
+                    <button
+                        onClick={() => dialogRef.current?.close()}
+                        className={'dialogbtn'}
+                        style={{ color: '#000', backgroundColor: '#fff' }}
+                    >
+                        取消
+                    </button>
+                </div>
+            </div>
+        </dialog>
+    )
+}
+
 // --- 3. 主要 React 元件 ---
 export default function OrderTable() {
-    // A. 狀態定義 (Hooks 必須在最上方)
     const [data] = useState(initialData);
     const [sorting, setSorting] = useState<SortingState>([]);
     const [columnFilters, setColumnFilters] = useState<ColumnFilter[]>([]);
     const [selectedOrder, setSelectedOrder] = useState<string | null>(null);
-    const dialogRef = useRef<HTMLDialogElement>(null);
 
-    // B. 事件處理
-    const handleReportClick = (orderNumber: string) => {
-        setSelectedOrder(orderNumber);
-        if (dialogRef.current) {
-            dialogRef.current.showModal();
-        }
-    };
-
-    // C. 建立 Table 實例 (依賴 handleReportClick)
-    const columns = useMemo(() => getColumns(handleReportClick), []);
+    // 建立 Table 實例
+    const columns = useMemo(() => getColumns({
+        onReportClick: (order) => setSelectedOrder(order)
+    }), []);
 
     const table = useReactTable({
         data,
@@ -120,7 +155,7 @@ export default function OrderTable() {
         enableGlobalFilter: false,
     });
 
-    // D. 查詢過濾邏輯
+    // 查詢過濾邏輯
     const handleDateRangeChange = (type: 'start' | 'end', date: string) => {
         const currentFilter = table.getColumn('startTime')?.getFilterValue() as DateRangeFilterValue ?? [null, null];
         const newFilter: DateRangeFilterValue = type === 'start' ? [date, currentFilter[1]] : [currentFilter[0], date];
@@ -206,34 +241,11 @@ export default function OrderTable() {
             </div>
 
             {/* 回報彈窗 */}
-            <dialog
-                ref={dialogRef}
-                className={ 'dialogwindow' }
-            >
-                <div style={{ textAlign: 'center' }}>
-                    <h3 style={{ marginTop: 0 }}>進度回報</h3>
-                    <p>您正在回報單號：<br /><strong>{selectedOrder}</strong></p>
-                    <div style={{ marginTop: '20px', display: 'flex', justifyContent: 'center', gap: '10px' }}>
-                        <button
-                            onClick={() => {
-                                alert(`已提交回報：${selectedOrder}`);
-                                dialogRef.current?.close();
-                            }}
-                            className={'dialogbtn'}
-                            style={{ color: '#fff', backgroundColor: '#00ba00' }}
-                        >
-                            提交
-                        </button>
-                        <button
-                            onClick={() => dialogRef.current?.close()}
-                            className={'dialogbtn'}
-                            style={{ color: '#000', backgroundColor: '#fff' }}
-                        >
-                            取消
-                        </button>
-                    </div>
-                </div>
-            </dialog>
+            <DoubleCheckDialog
+                order={ selectedOrder }
+                isOpen={selectedOrder !== null}
+                onClose={() => setSelectedOrder(null) }
+            />
         </div>
     );
 }

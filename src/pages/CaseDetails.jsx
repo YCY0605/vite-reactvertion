@@ -1,5 +1,39 @@
-﻿import React from 'react';
+﻿import React, { useState, useRef, useEffect } from 'react';
 import '../assets/css/CaseDetails.css';
+function IncidentDialog({ isOpen, onClose }) {
+    const dialogRef = useRef(null);
+    useEffect(() => {
+        if (isOpen) {
+            dialogRef.current?.showModal();
+        } else {
+            dialogRef.current?.close();
+        }
+    }, [isOpen]);
+    return (
+        <dialog ref={dialogRef} className={'caseDetailDialog'} onClose={onClose}>
+            <div className={'blocktitle'}>新增紀錄</div>
+            <div className={'dialogcontainer row'}>
+                <div className={'block col'} style={{ height: '100%' }}>
+                    <textarea className={'dialogtext'} style={{  }}>
+                        在這裡輸入內容...
+                    </textarea>
+                </div>
+                <div className={'col'}>
+                    <div className={'block'} style={{ height: '70%' }}></div>
+                    <div style={{ height: '15%' }} ></div>
+                    <div className={'row'} style={{ height: '15%' }} >
+                        <div className={'col btncontainer'}>
+                            <button className={'dialogbtn'} style={{}}>新增圖片</button>
+                        </div>
+                        <div className={'col btncontainer'}>
+                            <button className={'dialogbtn'} style={{}}>上傳紀錄</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </dialog>
+    )
+}
 
 const CaseDetail = () => {
     // 模擬數據，實際應用可從 props 或 API 獲取
@@ -11,6 +45,13 @@ const CaseDetail = () => {
     ];
 
     const incidentData = Array(5).fill({ time: "2026/06/06 09:00", type: "車禍", staff: "王小名" });
+
+    const [newWorkRecordisOpen, setNewWorkRecordIsOpen] = useState(false);
+
+    const newWorkRecordClick = (e) => {
+        e.preventDefault(); // 阻止瀏覽器跳轉或重新整理
+        setNewWorkRecordIsOpen(true);
+    };
 
     return (
         <div className="casedetailcontainer">
@@ -33,7 +74,7 @@ const CaseDetail = () => {
                                 搬運：<br />
                                 注意事項：
                             </div>
-                            <p style={{ flex: 1, overflowY: 'auto', fontSize: '18px', padding: '10px', scrollbarColor: '#999 transparent'}}>
+                            <p style={{ flex: 1, overflowY: 'auto', fontSize: '18px', padding: '10px', scrollbarColor: '#999 transparent' }}>
                                 {Array(14).fill("X").map((text, i) => <React.Fragment key={i}>{text}<br /></React.Fragment>)}
                             </p>
                             <div style={{ height: '20px' }}></div>
@@ -74,8 +115,14 @@ const CaseDetail = () => {
                     <div className="block casedetailrowblock">
                         <p className="blocktitle">
                             現場紀錄
-                            <a href="#" className={'newlink'}>新增</a>
+                            <a href="#" onClick={newWorkRecordClick} className={'newlink'}>新增</a>
                         </p>
+                        {/* 根據狀態顯示 Dialog */}
+                        <IncidentDialog
+                            isOpen={newWorkRecordisOpen}
+                            onClose={() => setNewWorkRecordIsOpen(false)}
+                        />
+
                         <div className={'tablecontainer'}>
                             <table style={{ width: '100%', textAlign: 'left' }}>
                                 <thead className={'tablehead'}>

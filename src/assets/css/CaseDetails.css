@@ -68,4 +68,45 @@
         display: flex;
         height: 0.25%;
     }
+
+    .caseDetailDialog {
+        width: 100%;
+    }
+}
+
+.caseDetailDialog {
+    width: 80vw;
+    height: 100vh;
+    background: white;
+    border: 1px solid #aaa;
+    border-radius: 4px;
+}
+
+.dialogcontainer {
+    height: calc(100% - 40px);
+    overflow-y: auto;
+    gap: min(20px, 2%);
+    padding: min(20px, 2%);
+}
+
+.dialogtext {
+    height: 100%;
+    width: 100%;
+    resize: none;
+    border: none;
+    background-color:transparent;
+    outline: none;
+}
+
+.btncontainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.dialogbtn {
+    bottom: 10px;
+    width: 120px;
+    height: 60px;
 }
