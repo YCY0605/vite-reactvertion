@@ -140,27 +140,28 @@ export default function OrderTable() {
         <div style={{ padding: '20px', fontFamily: 'sans-serif', backgroundColor: '#fff' }}>
             {/* 查詢區域 */}
             <div style={{ marginBottom: '20px', display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap' }}>
-                <span>從:</span>
-                <input
-                    type="date"
-                    onChange={(e) => handleDateRangeChange('start', e.target.value)}
-                    style={{ padding: '6px', border: '1px solid #ccc' }}
-                />
-                <span>至:</span>
-                <input
-                    type="date"
-                    onChange={(e) => handleDateRangeChange('end', e.target.value)}
-                    style={{ padding: '6px', border: '1px solid #ccc' }}
-                />
-                &nbsp;&nbsp;
+                <span>從:
+                    <input
+                        type="date"
+                        onChange={(e) => handleDateRangeChange('start', e.target.value)}
+                        style={{ padding: '6px', border: '1px solid #ccc', marginLeft: '10px' }}
+                    />
+                </span>
+                <span>至:
+                    <input
+                        type="date"
+                        onChange={(e) => handleDateRangeChange('end', e.target.value)}
+                        style={{ padding: '6px', border: '1px solid #ccc', marginLeft: '10px' }}
+                    />
+                    &nbsp;&nbsp;
+                </span>
                 <input
                     type="text"
                     value={orderNumberFilterValue}
                     onChange={e => handleOrderNumberSearch(e.target.value)}
                     placeholder="搜尋單號..."
-                    style={{ marginLeft: '20px', padding: '8px', width: '200px', borderRadius: '4px', border: '1px solid #ccc' }}
+                    style={{ padding: '8px', width: '200px', borderRadius: '4px', border: '1px solid #ccc', marginRight: '10px' }}
                 />
-                &nbsp;&nbsp;&nbsp;&nbsp;
                 <select
                     onChange={(e) => handleStatusChange(e.target.value)}
                     style={{ padding: '8px', borderRadius: '4px', border: '1px solid #ccc' }}

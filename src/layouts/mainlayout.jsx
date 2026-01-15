@@ -27,7 +27,7 @@ const MainLayout = () => {
         <>
             <header>
                 {/* 導覽列 */}
-                <nav className="navbar navbar-light custom-nav shadow-1-strong fixed-top">
+                <nav className="navbar navbar-light custom-nav shadow-1-strong fixed-top" style={{ boxShadow: 'inset 0px -2px 4px #eda'}}>
                     <div className="container-fluid">
                         {/* hamburger button */}
                         <button
@@ -43,32 +43,33 @@ const MainLayout = () => {
                             <i style={{ color: '#F75000' }} className="fa-solid fa-truck-fast"></i>
                             &nbsp;XX搬運
                         </Link>
+                        <NavDropdown
+                            title={<i className="fa-solid fa-bell fa-xl"></i>}
+                            id="nav-notify"
+                            align="end"
+                            className="no-caret me-2"
+                            style={{ color: '#F9F900', backgroundColor: '#fff', borderRadius: '50%', padding: '5px'}}
 
-                        {/*<div className="d-flex align-items-center">*/}
-                            <NavDropdown
-                                title={<i className="fa-regular fa-bell"></i>}
-                                id="nav-notify"
-                                align="end"
-                                className="no-caret me-2"
-                            >
-                                <NavDropdown.Item href="#">通知1</NavDropdown.Item>
-                                <NavDropdown.Item href="#">通知2</NavDropdown.Item>
-                                <NavDropdown.Item href="#">通知3</NavDropdown.Item>
-                                <NavDropdown.Divider />
-                                <NavDropdown.Item href="#">更多通知</NavDropdown.Item>
-                            </NavDropdown>
+                        >
+                            <NavDropdown.Item href="#">通知1</NavDropdown.Item>
+                            <NavDropdown.Item href="#">通知2</NavDropdown.Item>
+                            <NavDropdown.Item href="#">通知3</NavDropdown.Item>
+                            <NavDropdown.Divider />
+                            <NavDropdown.Item href="#">更多通知</NavDropdown.Item>
+                        </NavDropdown>
 
-                            <NavDropdown
-                                title="[帳號] - [員工姓名]"
-                                id="nav-user"
-                                align="end"
-                            >
-                                <NavDropdown.Item href="#">帳號中心</NavDropdown.Item>
-                                <NavDropdown.Item href="#">1</NavDropdown.Item>
-                                <NavDropdown.Item href="#">2</NavDropdown.Item>
-                                <NavDropdown.Divider />
-                                <NavDropdown.Item href="#">登出</NavDropdown.Item>
-                            </NavDropdown>
+                        <NavDropdown
+                            title="[帳號] - [員工姓名]"
+                            id="nav-user"
+                            align="end"
+                            style={{marginLeft: '1vw'} }
+                        >
+                            <NavDropdown.Item href="#">帳號中心</NavDropdown.Item>
+                            <NavDropdown.Item href="#">1</NavDropdown.Item>
+                            <NavDropdown.Item href="#">2</NavDropdown.Item>
+                            <NavDropdown.Divider />
+                            <NavDropdown.Item href="#">登出</NavDropdown.Item>
+                        </NavDropdown>
                         {/*</div>*/}
                     </div>
                 </nav>
@@ -173,7 +174,7 @@ const MainLayout = () => {
             </header>
 
             {/* 中間功能區 */}
-            <div className="container-fluid maincontainer" style={{ paddingTop: '56px'}}>
+            <div className="container-fluid maincontainer" style={{ paddingTop: '56px' }}>
                 <main role="main" className="pb-3 mainvw">
                     <Outlet />
                 </main>

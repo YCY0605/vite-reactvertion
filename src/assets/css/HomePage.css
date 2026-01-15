@@ -56,7 +56,7 @@
     place-items: center;
     grid-template-columns: repeat(5, 1fr);
     grid-template-rows: repeat(auto-fill, 30px);
-    overflow-y: auto;
+    overflow-y: hidden;
     gap: 1px;
     background-color: #aaa;
     border: 1px solid #aaa;

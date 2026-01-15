@@ -46,6 +46,102 @@
     display: none;
 }
 
+.caseDetailDialog {
+    width: 80vw;
+    height: 100vh;
+    background: white;
+    border: 1px solid #aaa;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.dialogcontainer {
+    height: calc(100% - 40px);
+    overflow-y: auto;
+    gap: min(20px, 2%);
+    padding: min(20px, 2%);
+    display: flex;
+}
+
+.dialogcol {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.textareacontainer {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.dialogtext {
+    height: 95%;
+    width: 95%;
+    resize: none;
+    border: none;
+    outline: none;
+    border-radius: 4px;
+    background-color: transparent;
+    padding: 10px;
+}
+
+.dialogimg {
+    height: 100%;
+    width: 100%;
+    border: 2px dashed #ccc;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fbfbfb;
+    border-radius: 4px;
+}
+
+.imgdelbtn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(255, 0, 0, 0.7);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+}
+
+.imgchgbtncontainer {
+    height: 15%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 2.5%;
+}
+
+.imgchgbtn {
+    border: 1px solid #aaa;
+    border-radius: 2px;
+}
+
+.bottombtncontainer {
+    height: 15%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.bottombtn {
+    padding: 0.8vw 1.3vw;    
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
 /* 當螢幕寬度小於 768px 時觸發 */
 @media (max-width: 767px) {
     .casedetailcontainer {
@@ -72,41 +168,13 @@
     .caseDetailDialog {
         width: 100%;
     }
-}
 
-.caseDetailDialog {
-    width: 80vw;
-    height: 100vh;
-    background: white;
-    border: 1px solid #aaa;
-    border-radius: 4px;
-}
+    .dialogcol {
+        height: calc(50% - 10px);
+    }
 
-.dialogcontainer {
-    height: calc(100% - 40px);
-    overflow-y: auto;
-    gap: min(20px, 2%);
-    padding: min(20px, 2%);
-}
+    .bottombtn {
+        font-size: 3vw;
+    }
 
-.dialogtext {
-    height: 100%;
-    width: 100%;
-    resize: none;
-    border: none;
-    background-color:transparent;
-    outline: none;
-}
-
-.btncontainer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-}
-
-.dialogbtn {
-    bottom: 10px;
-    width: 120px;
-    height: 60px;
 }
