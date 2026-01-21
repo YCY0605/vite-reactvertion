@@ -4,21 +4,22 @@
         "module": "ESNext",
         "lib": [ "ES2020", "DOM", "DOM.Iterable" ],
         "jsx": "react-jsx",
+        "types": [ "vite/client" ],
 
-        /* ¼Ò²Õ¸ÑªR¿ï¶µ */
-        // ±Ò¥Î CommonJS/ES Module ¤¬³q©Ê
+        /* æ¨¡çµ„è§£æé¸é … */
+        // å•Ÿç”¨ CommonJS/ES Module äº’é€šæ€§
         "esModuleInterop": true,
-        // ¨Ï¥Î²{¥N¥´¥]¤u¨ãªº¸ÑªRµ¦²¤
+        // ä½¿ç”¨ç¾ä»£æ‰“åŒ…å·¥å…·çš„è§£æç­–ç•¥
         "moduleResolution": "Bundler",
 
-        /* ÄY®æ«×©M«K§Q©ÊºX¼Ğ */
+        /* åš´æ ¼åº¦å’Œä¾¿åˆ©æ€§æ——æ¨™ */
         "strict": true,
-        "skipLibCheck": true, // ²¤¹L node_modules ¤¤ªº«¬§OÀË¬d
+        "skipLibCheck": true, // ç•¥é node_modules ä¸­çš„å‹åˆ¥æª¢æŸ¥
 
-        /* ¨ä¥L¿ï¶µ */
+        /* å…¶ä»–é¸é … */
         "forceConsistentCasingInFileNames": true,
         "resolveJsonModule": true,
-        "allowJs": true // ¤¹³\¦b TS ±M®×¤¤¥]§t JS ÀÉ®×
+        "allowJs": true // å…è¨±åœ¨ TS å°ˆæ¡ˆä¸­åŒ…å« JS æª”æ¡ˆ
     },
-    "include": [ "src" ] // §i¶D TypeScript ¦b­ş¸Ì´M§ä­ì©l½XÀÉ®×
+    "include": [ "src" ] // å‘Šè¨´ TypeScript åœ¨å“ªè£¡å°‹æ‰¾åŸå§‹ç¢¼æª”æ¡ˆ
 }

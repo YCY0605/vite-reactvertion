@@ -39,21 +39,9 @@ const dateRangeFilterFn: FilterFn<OrderData> = (row, columnId, filterValue: Date
     });
 };
 
-const statusOptions = ['所有狀態', '到達起點', '離開起點', '到達目的', '任務完成'];
+const statusOptions = ['所有狀態', '尚未開始', '到達起點', '離開起點', '到達目的', '任務完成'];
+var initialData: OrderData[] = [];
 
-// --- 2. 模擬資料 ---
-const initialData: OrderData[] = [
-    { startTime: '2026-06-06 08:00:00', orderNumber: 'aaa000001', status: '離開起點' },
-    { startTime: '2026-06-07 09:00:00', orderNumber: 'aaa000002', status: '到達起點' },
-    { startTime: '2026-06-08 10:00:00', orderNumber: 'bbb000003', status: '任務完成' },
-    { startTime: '2026-06-09 11:00:00', orderNumber: 'aaa000004', status: '到達目的' },
-    { startTime: '2026-06-10 12:00:00', orderNumber: 'ccc000005', status: '離開起點' },
-    { startTime: '2026-06-10 12:00:00', orderNumber: 'ccc000005', status: '離開起點' },
-    { startTime: '2026-06-10 12:00:00', orderNumber: 'ccc000005', status: '離開起點' },
-    { startTime: '2026-06-10 12:00:00', orderNumber: 'ccc000005', status: '離開起點' },
-    { startTime: '2026-06-10 12:00:00', orderNumber: 'ccc000005', status: '離開起點' },
-    { startTime: '2026-06-10 12:00:00', orderNumber: 'ccc000005', status: '離開起點' },
-];
 
 const columnHelper = createColumnHelper<OrderData>();
 
@@ -64,10 +52,10 @@ const getColumns = ({ onReportClick }: { onReportClick: (order: string) => void 
         filterFn: dateRangeFilterFn,
     }),
     columnHelper.accessor('orderNumber', {
-        header: () => <div className={'headorder'}>單號</div>,
+        header: () => <div className={'headorder'}>任務排程代號</div>,
     }),
     columnHelper.accessor('status', {
-        header: () => <div className={'headorder'}>狀態</div>,
+        header: () => <div >狀態</div>,
         enableSorting: false,
     }),
     columnHelper.display({
@@ -85,16 +73,56 @@ const getColumns = ({ onReportClick }: { onReportClick: (order: string) => void 
     }),
 ];
 
+
 // dialog
-function DoubleCheckDialog({ order, isOpen, onClose }: { order: string | null, isOpen: boolean, onClose: () => void }) {
+function DoubleCheckDialog({ order, status, isOpen, onClose }: { order: string | null, status: string, isOpen: boolean, onClose: () => void }) {
+    const chgState = () => {
+        switch (status) {
+            case "尚未開始": setNewStatus("到達起點"); break;
+            case "到達起點": setNewStatus("離開起點"); break;
+            case "離開起點": setNewStatus("到達目的"); break;
+            case "到達目的": setNewStatus("任務完成"); break;
+            default: setNewStatus("錯誤"); break;
+        }
+    }
     const dialogRef = useRef<HTMLDialogElement>(null);
+    const [newStatus, setNewStatus] = useState("");
+    const [lng, setLng] = useState(0);
+    const [lat, setLat] = useState(0);
+    const [lngString, setLngString] = useState("取得中");
+    const [latString, setLatString] = useState("取得中");
     useEffect(() => {
+        chgState();
         if (isOpen) {
             dialogRef.current?.showModal();
         } else {
             dialogRef.current?.close();
         }
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const { longitude, latitude } = position.coords;
+                    setLng(longitude); // 經度
+                    setLat(latitude);  // 緯度
+                    setLngString(longitude.toString());
+                    setLatString(latitude.toString());
+                    console.log(`${longitude}, ${latitude}`);
+                },
+                (err) => {
+                    setLngString("取得失敗");
+                    setLatString("取得失敗");
+                    console.error(err);
+                },
+                { enableHighAccuracy: true }
+            );
+        }
+        else {
+            alert("瀏覽器不支持地理定位。");
+            setLngString("取得失敗");
+            setLatString("取得失敗");
+        }
     }, [isOpen]);
+
     return (
         <dialog
             ref={dialogRef}
@@ -103,11 +131,35 @@ function DoubleCheckDialog({ order, isOpen, onClose }: { order: string | null, i
         >
             <div style={{ textAlign: 'center' }}>
                 <h3 style={{ marginTop: 0 }}>進度回報</h3>
-                <p>您正在回報單號：<br /><strong>{order}</strong></p>
+                <p>
+                    正在回報單號：<strong>{order}</strong><br />
+                    經緯度：{lngString}, {latString}
+                </p>
+                {/*<p>座標：<strong>`${lng}, ${lat}`</strong></p>*/}
                 <div style={{ marginTop: '20px', display: 'flex', justifyContent: 'center', gap: '10px' }}>
                     <button
-                        onClick={() => {
-                            alert(`已提交回報：${order}`);
+                        onClick={async () => {
+                            console.log({
+                                taskScheduleId: parseInt(order!.match(/\d+/)![0], 10),
+                                workPunchLng: lng,
+                                workPunchLat: lat
+                            })
+                            const response = await fetch(import.meta.env.VITE_API_URL + '/api/Mover/newprogress', {
+                                method: 'PUT',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+
+                                },
+                                body: JSON.stringify({
+                                    taskScheduleId: parseInt(order!.match(/\d+/)![0], 10).toString(),
+                                    workRecordContent: newStatus,
+                                    workPunchLng: lng.toString(),
+                                    workPunchLat: lat.toString()
+                                }),
+                            }
+                            )
+                            alert(`${await response.text()}`);
                             onClose();
                         }}
                         className={'dialogbtn'}
@@ -130,10 +182,56 @@ function DoubleCheckDialog({ order, isOpen, onClose }: { order: string | null, i
 
 // --- 3. 主要 React 元件 ---
 export default function OrderTable() {
-    const [data] = useState(initialData);
+    const [data, setData] = useState(initialData);
     const [sorting, setSorting] = useState<SortingState>([]);
     const [columnFilters, setColumnFilters] = useState<ColumnFilter[]>([]);
     const [selectedOrder, setSelectedOrder] = useState<string | null>(null);
+
+    const dataLoading = async () => {
+        try {
+            const response = await fetch(import.meta.env.VITE_API_URL + '/api/Mover/progress', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                },
+            });
+
+            if (response.ok) {
+                const rawData = await response.json();
+
+                // 加工資料
+                const processedData = rawData.map((item: any) => {
+                    const startTime = `${item.taskScheduleStartDate} ${item.taskScheduleStartAt}`;
+
+                    // 2. 判斷進度狀態 (根據 count 遞增)
+                    let progressState = "";
+                    switch (item.progressUpdateCount) {
+                        case 0: progressState = "尚未開始"; break;
+                        case 1: progressState = "到達起點"; break;
+                        case 2: progressState = "離開起點"; break;
+                        case 3: progressState = "到達目的"; break;
+                        case 4: progressState = "任務完成"; break;
+                        default: progressState = "錯誤"; break;
+                    }
+
+                    return {
+                        ...item,
+                        startTime: startTime,      // 新增組合後的欄位
+                        status: progressState,     // 將 count 轉為文字狀態
+                        orderNumber: `TS-${item.taskScheduleId.toString().padStart(6, '0')}` // 模擬單號
+                    };
+                });
+                setData(processedData);
+            } else {
+                const errorText = await response.text();
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('無法連線至伺服器');
+        }
+    };
+
 
     // 建立 Table 實例
     const columns = useMemo(() => getColumns({
@@ -172,6 +270,10 @@ export default function OrderTable() {
 
     const orderNumberFilterValue = (table.getColumn('orderNumber')?.getFilterValue() as string) ?? '';
 
+    useEffect(() => {
+        dataLoading();
+    }, [])
+
     return (
         <div style={{ padding: '20px', fontFamily: 'sans-serif', backgroundColor: '#fff' }}>
             {/* 查詢區域 */}
@@ -208,7 +310,7 @@ export default function OrderTable() {
             </div>
 
             {/* 表格區域 */}
-            <div className={ 'tablecontainer' }>
+            <div className={'tablecontainer'}>
                 <table className={'reporttable'}>
                     <thead className={'tablehead'}>
                         {table.getHeaderGroups().map(headerGroup => (
@@ -242,9 +344,10 @@ export default function OrderTable() {
 
             {/* 回報彈窗 */}
             <DoubleCheckDialog
-                order={ selectedOrder }
+                order={selectedOrder}
+                status={data.find((d) => d.orderNumber == selectedOrder)?.status ?? ""}
                 isOpen={selectedOrder !== null}
-                onClose={() => setSelectedOrder(null) }
+                onClose={() => setSelectedOrder(null)}
             />
         </div>
     );
